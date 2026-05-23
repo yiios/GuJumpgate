@@ -1,0 +1,56 @@
+background/message-router.js
+  bf830b8fbb82e1de 1783,1786
+sidepanel/sidepanel.js
+  bf830b8fbb82e1de 12630,12634,12643,12656,12670,12679,12688
+sidepanel/hotmail-manager.js
+  bf830b8fbb82e1de 283,512,514,516,587
+sidepanel/sidepanel.html
+  bf830b8fbb82e1de 933,941,943
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.8",
+  "base_commit_sha": "04d7bb05e13b84d478251900078dbc70690a1c39",
+  "prompts": {
+    "bf830b8fbb82e1de": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a5635883-45c1-4971-8089-8774a956a6dd",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "yanbing",
+      "messages": [],
+      "total_additions": 49,
+      "total_deletions": 49,
+      "accepted_lines": 25,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "sidepanel/hotmail-manager.js": {
+          "additions": 10,
+          "deletions": 10,
+          "accepted_lines": 5
+        },
+        "sidepanel/sidepanel.js": {
+          "additions": 13,
+          "deletions": 13,
+          "accepted_lines": 7
+        },
+        "background.js": {
+          "additions": 16,
+          "deletions": 16,
+          "accepted_lines": 8
+        },
+        "sidepanel/sidepanel.html": {
+          "additions": 6,
+          "deletions": 6,
+          "accepted_lines": 3
+        },
+        "background/message-router.js": {
+          "additions": 4,
+          "deletions": 4,
+          "accepted_lines": 2
+        }
+      }
+    }
+  }
+}
