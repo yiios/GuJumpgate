@@ -13953,7 +13953,7 @@ function validateHotmailSub2ApiLoginImportState(state = {}, account = null) {
     throw new Error('未找到对应的 Hotmail 账号。');
   }
   if (!account.used) {
-    throw new Error('只有已用 Hotmail 账号可以执行登录并导入。');
+    throw new Error('只有已用 Hotmail 账号可以执行重新登录导入。');
   }
   if (!String(account.email || '').trim()) {
     throw new Error('目标 Hotmail 账号缺少邮箱地址。');
@@ -14044,11 +14044,11 @@ async function runLoginImportVerificationStep(stateOverride = {}) {
       if (tabId) {
         const tab = await chrome.tabs.get(tabId).catch(() => null);
         if (tab && isChatGptSessionPageUrl(tab.url)) {
-          await addLog('登录并导入：验证码已提交，页面已跳转到 ChatGPT 会话页。', 'info');
+          await addLog('重新登录导入：验证码已提交，页面已跳转到 ChatGPT 会话页。', 'info');
           return;
         }
       }
-      await addLog('登录并导入：验证码提交后页面连接中断，但未检测到登录成功，将继续尝试导入。', 'warn');
+      await addLog('重新登录导入：验证码提交后页面连接中断，但未检测到登录成功，将继续尝试导入。', 'warn');
       return;
     }
     throw err;
@@ -14061,14 +14061,14 @@ async function runLoginImportVerificationStep(stateOverride = {}) {
 }
 
 async function runHotmailChatGptLogin(account) {
-  await addLog(`登录并导入：正在打开 ChatGPT 登录页，账号 ${account.email}。`, 'info');
+  await addLog(`重新登录导入：正在打开 ChatGPT 登录页，账号 ${account.email}。`, 'info');
   const tabId = await reuseOrCreateTab('signup-page', 'https://chatgpt.com/auth/login', { forceNew: true });
   await waitForTabCompleteUntilStopped(tabId, { timeoutMs: 45000 }).catch(() => null);
   await ensureContentScriptReadyOnTabUntilStopped('signup-page', tabId, {
     inject: SIGNUP_PAGE_INJECT_FILES,
     injectSource: 'signup-page',
     timeoutMs: 45000,
-    logMessage: '登录并导入：ChatGPT 登录页内容脚本未就绪，正在等待页面恢复...',
+    logMessage: '重新登录导入：ChatGPT 登录页内容脚本未就绪，正在等待页面恢复...',
   });
 
   const loginPayload = {
@@ -14088,7 +14088,7 @@ async function runHotmailChatGptLogin(account) {
     timeoutMs: 180000,
     responseTimeoutMs: 180000,
     retryDelayMs: 700,
-    logMessage: '登录并导入：认证页正在切换，等待页面重新就绪后继续登录...',
+    logMessage: '重新登录导入：认证页正在切换，等待页面重新就绪后继续登录...',
     logStep: 7,
     logStepKey: 'oauth-login',
   });
@@ -14115,7 +14115,7 @@ async function loginHotmailAndImportSub2Api(accountId) {
   const account = findHotmailAccount(normalizeHotmailAccounts(state.hotmailAccounts), accountId);
   validateHotmailSub2ApiLoginImportState(state, account);
 
-  await addLog(`登录并导入：准备使用 Hotmail 已用账号 ${account.email} 重新登录 ChatGPT。`, 'info');
+  await addLog(`重新登录导入：准备使用 Hotmail 已用账号 ${account.email} 重新登录 ChatGPT。`, 'info');
   await setCurrentHotmailAccount(account.id, { markUsed: false, syncEmail: true });
   await setPasswordState(account.password);
   await setState({
@@ -14135,7 +14135,7 @@ async function loginHotmailAndImportSub2Api(accountId) {
   await step1Executor.clearOpenAiCookiesBeforeStep1();
   const loginTabId = await runHotmailChatGptLogin(account);
   const sessionTab = await ensureChatGptSessionTabForImport(loginTabId);
-  await addLog('登录并导入：ChatGPT 登录完成，正在读取当前会话并导入 SUB2API。', 'info');
+  await addLog('重新登录导入：ChatGPT 登录完成，正在读取当前会话并导入 SUB2API。', 'info');
 
   try {
     await sub2ApiSessionImportExecutor.executeSub2ApiSessionImport({
